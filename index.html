@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fee arbitral – Torneo Nacional</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#0F1B2D;color:#111827}
+.top{color:#fff;padding:28px 22px 22px;text-align:center}
+.top small{display:block;color:#9FB0C8;letter-spacing:.1em;text-transform:uppercase;font-size:12px}
+.top h1{margin:6px 0 4px;font-size:30px}
+.top p{margin:0;color:#C7D2E3;font-size:15px}
+.card{background:#fff;border-radius:22px 22px 0 0;min-height:calc(100vh - 140px);padding:24px 20px 32px;max-width:520px;margin:0 auto}
+label{display:block;font-weight:700;font-size:16px;margin:16px 0 6px}
+input,select{width:100%;font-size:18px;padding:14px;border:2px solid #C9D1DC;border-radius:12px;background:#fff}
+input:focus,select:focus{outline:none;border-color:#009EE3}
+.monto{margin:22px 0 6px;display:flex;justify-content:space-between;align-items:center;background:#F4F6F9;border-radius:12px;padding:14px 16px;font-size:16px}
+.monto b{font-size:22px}
+.nota{font-size:14px;color:#4B5563;margin:8px 0 0}
+#pagar{display:block;width:100%;margin-top:22px;padding:22px;font-size:26px;font-weight:800;letter-spacing:.04em;color:#fff;background:#009EE3;border:none;border-radius:16px;cursor:pointer;box-shadow:0 6px 0 #007BB0}
+#pagar:active{transform:translateY(3px);box-shadow:0 3px 0 #007BB0}
+#pagar small{display:block;font-size:14px;font-weight:500;letter-spacing:0;margin-top:4px}
+#error{color:#B42318;font-weight:600;margin-top:12px;display:none}
+</style>
+</head>
+<body>
+<div class="top">
+<small>Torneo Nacional de Squash</small>
+<h1>Fee arbitral</h1>
+<p>Datos del JUGADOR (aunque pague otra persona)</p>
+</div>
+<div class="card">
+<form id="f" autocomplete="on">
+<label for="nombre">Nombre del jugador</label>
+<input id="nombre" required autocomplete="given-name" placeholder="Ej.: Juan">
+<label for="apellido">Apellido del jugador</label>
+<input id="apellido" required autocomplete="family-name" placeholder="Ej.: Pérez">
+<label for="categoria">Categoría</label>
+<select id="categoria" required>
+<option value="">Elegí la categoría</option>
+<option>Primera</option><option>Segunda</option><option>Tercera</option><option>Cuarta</option><option>Quinta</option><option>Sexta</option>
+<option>Damas Primera</option><option>Damas Segunda</option><option>Damas Tercera</option>
+<option>Sub-13</option><option>Sub-15</option><option>Sub-17</option><option>Sub-19</option>
+<option>Maxi +35</option><option>Maxi +45</option><option>Maxi +55</option>
+</select>
+<div class="monto"><span>Fee arbitral</span><b>$ 100</b></div>
+<p class="nota">Puede pagar cualquier persona con su Mercado Pago o tarjeta.</p>
+<button id="pagar" type="submit">PAGAR<small>con Mercado Pago</small></button>
+<p id="error">Completá nombre, apellido y categoría.</p>
+</form>
+</div>
+<iframe name="gf" style="display:none"></iframe>
+<form id="gform" action="https://docs.google.com/forms/d/e/1FAIpQLScmLXkAFHybUdEFkv2CGEb5eATRs-21LqW4J75hFJ4loCsKRA/formResponse" method="POST" target="gf" style="display:none">
+<input name="entry.1932588030" id="g1">
+<input name="entry.994962409" id="g2">
+<input name="entry.1721306052" id="g3">
+</form>
+<script>
+const MP = 'https://mpago.la/2N5McxY';
+document.getElementById('f').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const n = document.getElementById('nombre').value.trim();
+  const a = document.getElementById('apellido').value.trim();
+  const c = document.getElementById('categoria').value;
+  if (!n || !a || !c) { document.getElementById('error').style.display = 'block'; return; }
+  document.getElementById('g1').value = n;
+  document.getElementById('g2').value = a;
+  document.getElementById('g3').value = c;
+  document.getElementById('gform').submit();
+  const b = document.getElementById('pagar');
+  b.disabled = true; b.firstChild.textContent = 'ABRIENDO…';
+  setTimeout(function () { window.location.href = MP; }, 900);
+});
+</script>
+</body>
+</html>
